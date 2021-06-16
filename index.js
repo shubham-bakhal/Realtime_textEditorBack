@@ -18,7 +18,7 @@ mongoose.connect(
   }
 );
 
-const io = require('socket.io')(PORT, {
+const io = require('socket.io')(3001, {
   cors: {
     origin: ['https://realtimetexteditor.netlify.app/'],
     methods: ['GET', 'POST'],
