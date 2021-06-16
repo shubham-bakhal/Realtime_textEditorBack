@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
+const express = require('express');
 const Document = require('./Document');
+
+const app = express();
+app.use(express.json());
+
+
 mongoose.connect(
   'mongodb+srv://shub:YtqLh4V56HT1E0iS@cluster0.bqzfc.mongodb.net/onlineDocs',
   {
@@ -43,3 +49,8 @@ async function findOrCreateDocument(id) {
   if (document) return document;
   return await Document.create({ _id: id, data: defaultValue });
 }
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`listing on port ${PORT}`);
+});
