@@ -3,8 +3,8 @@ const cors = require('cors')
 const express = require('express');
 const Document = require('./Document');
 
-const app = express();
-app.use(express.json());
+// const app = express();
+// app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,30 +18,48 @@ mongoose.connect(
   }
 );
 
-const io = require('socket.io')(3001, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-  },
-});
 
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'POST'],
-  })
-);
 
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
-  );
-  next();
-});
+
+const server = require('http').createServer();
+const options = {
+  cors:true,
+  origins:["https://realtimetexteditor.netlify.app/"],
+ }
+const io = require('socket.io')(server, options);
+
+server.listen(PORT);
+
+
+
+
+
+
+
+// const io = require('socket.io')(3001, {
+//   cors: {
+//     origin: '*',
+//     methods: ['GET', 'POST'],
+//   },
+// });
+
+// app.use(
+//   cors({
+//     origin: '*',
+//     methods: ['GET', 'POST'],
+//   })
+// );
+
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
+//   );
+//   next();
+// });
 
 
 const defaultValue = '';
@@ -70,7 +88,3 @@ async function findOrCreateDocument(id) {
   if (document) return document;
   return await Document.create({ _id: id, data: defaultValue });
 }
-
-app.listen(PORT, () => {
-  console.log(`listing on port ${PORT}`);
-});
