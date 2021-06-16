@@ -18,10 +18,29 @@ mongoose.connect(
 
 const io = require('socket.io')(3001, {
   cors: {
-    origin: 'https://realtimetexteditor.netlify.app/',
+    origin: ['https://realtimetexteditor.netlify.app/'],
     methods: ['GET', 'POST'],
   },
 });
+
+app.use(
+  cors({
+    origin: ['https://realtimetexteditor.netlify.app/'],
+    methods: ['GET', 'POST'],
+  })
+);
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
+  );
+  next();
+});
+
 
 const defaultValue = '';
 
