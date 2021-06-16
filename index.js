@@ -20,14 +20,14 @@ mongoose.connect(
 
 const io = require('socket.io')(3001, {
   cors: {
-    origin: ['https://realtimetexteditor.netlify.app/'],
+    origin: '*',
     methods: ['GET', 'POST'],
   },
 });
 
 app.use(
   cors({
-    origin: ['https://realtimetexteditor.netlify.app/'],
+    origin: '*',
     methods: ['GET', 'POST'],
   })
 );
